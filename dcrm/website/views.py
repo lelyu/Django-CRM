@@ -16,15 +16,15 @@ def home(request):
             messages.success(request, 'User is logged in.')
             return redirect('home')
         else:
-            messages.success(request, 'There was an error. Try again.')
+            messages.success(request, '(From home controller in views.py) There was an error. Try again.')
             return redirect('home')
     return render(request, 'home.html', {})
-    
-def login_user(request):
-    pass
-
 
 def logout_user(request):
-    pass
+    logout(request)
+    messages.success(request, '(From logout controller) You have logged out')
+    return render(request, 'home.html', {})
 
 
+def register_user(request):
+    return render(request, 'register.html', {})
