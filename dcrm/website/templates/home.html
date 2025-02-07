@@ -16,7 +16,7 @@
             <tbody>
                 {% for r in records %}
                     <tr>
-                    <th scope="row">{{r.id}}</th>
+                    <th scope="row"><a href='records/{{r.id}}'>{{r.id}}</a></th>
                     <td>{{r.first_name}}</td>
                     <td>{{r.last_name}}</td>
                     <td>{{r.email}}</td>

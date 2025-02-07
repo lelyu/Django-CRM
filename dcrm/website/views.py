@@ -56,3 +56,50 @@ def register_user(request):
         form = forms.SignUpForm()
     
     return render(request, 'register.html', {'form': form})
+
+
+# pk: primary key
+# get customer_record
+def customer_record(request, customer_id):
+    if request.user.is_authenticated:
+        # look up records
+        customer_record = Record.objects.get(id=customer_id)
+        return render(request, 'record.html', {'customer_record': customer_record})
+    messages.success(request, 'Please login first.')
+    return redirect('home')
+
+def delete_record(request, customer_id):
+    if request.user.is_authenticated:
+        # look up records
+        customer_record = Record.objects.get(id=customer_id)
+        customer_record.delete()
+        return redirect('home')
+    messages.success(request, 'Please login first.')
+    return redirect('home')
+
+
+def add_record(request):
+    form = forms.AddRecordForm(request.POST)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            if form.is_valid():
+                add_record = form.save()
+                messages.success(request, 'Record added')
+                return redirect('home')
+        return render(request, 'add_record.html', {'form': form})
+    messages.success(request, 'Please login first.')
+    return redirect('home')
+
+
+def edit_record(request, customer_id):
+    if request.user.is_authenticated:
+        # look up records
+        curr_record = Record.objects.get(id=customer_id)
+        form = forms.AddRecordForm(request.POST or None, instance=curr_record)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Record edited')
+            return redirect('home')
+        return render(request, 'edit_record.html', {'form': form})
+    messages.success(request, 'Please login first.')
+    return redirect('home')
